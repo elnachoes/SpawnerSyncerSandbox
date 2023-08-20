@@ -1,6 +1,6 @@
-[gd_scene load_steps=5 format=3 uid="uid://e35a8o6mfrrk"]
+[gd_scene load_steps=5 format=3 uid="uid://ft1n2pqhd4o2"]
 
-[ext_resource type="Script" path="res://Player.gd" id="1_agvp2"]
+[ext_resource type="Script" path="res://player.gd" id="1_kc5oc"]
 [ext_resource type="Texture2D" uid="uid://de2ox2pf1438u" path="res://player_1_icon.svg" id="2_l845m"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_h6gf5"]
@@ -11,7 +11,7 @@ properties/0/spawn = true
 properties/0/sync = true
 
 [node name="Player" type="CharacterBody2D"]
-script = ExtResource("1_agvp2")
+script = ExtResource("1_kc5oc")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("2_l845m")

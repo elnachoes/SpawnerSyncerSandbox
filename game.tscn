@@ -47,23 +47,43 @@ grow_horizontal = 2
 grow_vertical = 2
 metadata/_edit_use_anchors_ = true
 
-[node name="HBoxContainer" type="HBoxContainer" parent="ConnectionMenu"]
+[node name="HBoxContainer" type="VBoxContainer" parent="ConnectionMenu"]
 layout_mode = 0
 offset_right = 40.0
 offset_bottom = 40.0
-
-[node name="HostButton" type="Button" parent="ConnectionMenu/HBoxContainer"]
-layout_mode = 2
-text = "Host"
-
-[node name="ConnectButton" type="Button" parent="ConnectionMenu/HBoxContainer"]
-layout_mode = 2
-text = "Connect"
 
 [node name="NetIdLabel" type="Label" parent="ConnectionMenu/HBoxContainer"]
 layout_mode = 2
 theme = SubResource("Theme_4inoc")
 text = "Net Id :"
+
+[node name="VBoxContainer" type="HBoxContainer" parent="ConnectionMenu/HBoxContainer"]
+layout_mode = 2
+
+[node name="IpAddress" type="TextEdit" parent="ConnectionMenu/HBoxContainer/VBoxContainer"]
+custom_minimum_size = Vector2(150, 35)
+layout_mode = 2
+text = "127.0.0.1"
+placeholder_text = "IpAddress"
+
+[node name="Port" type="TextEdit" parent="ConnectionMenu/HBoxContainer/VBoxContainer"]
+custom_minimum_size = Vector2(100, 30)
+layout_mode = 2
+text = "9001"
+placeholder_text = "Port
+"
+
+[node name="HostButton" type="Button" parent="ConnectionMenu/HBoxContainer"]
+layout_mode = 2
+text = "Host Headless"
+
+[node name="HostAsPlayer" type="Button" parent="ConnectionMenu/HBoxContainer"]
+layout_mode = 2
+text = "Host As Player"
+
+[node name="ConnectButton" type="Button" parent="ConnectionMenu/HBoxContainer"]
+layout_mode = 2
+text = "Connect"
 
 [node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="."]
 _spawnable_scenes = PackedStringArray("res://player.tscn")
@@ -75,4 +95,5 @@ spawn_path = NodePath("../PlayerSpawn")
 position = Vector2(576, 320)
 
 [connection signal="pressed" from="ConnectionMenu/HBoxContainer/HostButton" to="." method="_on_host_button_pressed"]
+[connection signal="pressed" from="ConnectionMenu/HBoxContainer/HostAsPlayer" to="." method="_on_host_as_player_pressed"]
 [connection signal="pressed" from="ConnectionMenu/HBoxContainer/ConnectButton" to="." method="_on_connect_button_pressed"]
