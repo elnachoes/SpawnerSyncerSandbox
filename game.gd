@@ -17,6 +17,7 @@ func _ready():
 	if OS.get_cmdline_args().find("server") != -1:
 		create_server()
 
+# setup a server and the nessesary events and set the label text
 func create_server():
 	var peer = ENetMultiplayerPeer.new()
 	peer.create_server(PORT, MAX_CLIENTS)
@@ -25,11 +26,10 @@ func create_server():
 	multiplayer.peer_disconnected.connect(handle_client_disconnected)
 	net_id_label.text = "Server"
 
-# create server
 func _on_host_button_pressed():
 	create_server();
 
-# create client
+# create client and set label text
 func _on_connect_button_pressed():
 	var peer = ENetMultiplayerPeer.new()
 	peer.create_client(IP_ADDRESS, PORT)
