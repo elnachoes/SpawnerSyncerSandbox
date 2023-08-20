@@ -1,0 +1,75 @@
+[gd_scene load_steps=4 format=3 uid="uid://b367dtawi0twu"]
+
+[ext_resource type="Script" path="res://game.gd" id="1_k6w5g"]
+
+[sub_resource type="FontFile" id="FontFile_lsd7l"]
+face_index = null
+embolden = null
+transform = null
+cache/0/16/0/ascent = 0.0
+cache/0/16/0/descent = 0.0
+cache/0/16/0/underline_position = 0.0
+cache/0/16/0/underline_thickness = 0.0
+cache/0/16/0/scale = 1.0
+cache/0/16/0/kerning_overrides/16/0 = Vector2(0, 0)
+cache/0/16/0/kerning_overrides/200/0 = Vector2(0, 0)
+cache/0/16/0/kerning_overrides/30/0 = Vector2(0, 0)
+cache/0/200/0/ascent = 0.0
+cache/0/200/0/descent = 0.0
+cache/0/200/0/underline_position = 0.0
+cache/0/200/0/underline_thickness = 0.0
+cache/0/200/0/scale = 1.0
+cache/0/200/0/kerning_overrides/16/0 = Vector2(0, 0)
+cache/0/200/0/kerning_overrides/200/0 = Vector2(0, 0)
+cache/0/200/0/kerning_overrides/30/0 = Vector2(0, 0)
+cache/0/30/0/ascent = 0.0
+cache/0/30/0/descent = 0.0
+cache/0/30/0/underline_position = 0.0
+cache/0/30/0/underline_thickness = 0.0
+cache/0/30/0/scale = 1.0
+cache/0/30/0/kerning_overrides/16/0 = Vector2(0, 0)
+cache/0/30/0/kerning_overrides/200/0 = Vector2(0, 0)
+cache/0/30/0/kerning_overrides/30/0 = Vector2(0, 0)
+
+[sub_resource type="Theme" id="Theme_4inoc"]
+default_font = SubResource("FontFile_lsd7l")
+default_font_size = 30
+
+[node name="Game" type="Node"]
+script = ExtResource("1_k6w5g")
+
+[node name="ConnectionMenu" type="Control" parent="."]
+layout_mode = 3
+anchor_right = 1.0
+anchor_bottom = 1.0
+metadata/_edit_use_anchors_ = true
+
+[node name="HBoxContainer" type="HBoxContainer" parent="ConnectionMenu"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="HostButton" type="Button" parent="ConnectionMenu/HBoxContainer"]
+layout_mode = 2
+text = "Host"
+
+[node name="ConnectButton" type="Button" parent="ConnectionMenu/HBoxContainer"]
+layout_mode = 2
+text = "Connect"
+
+[node name="NetIdLabel" type="Label" parent="ConnectionMenu/HBoxContainer"]
+layout_mode = 2
+theme = SubResource("Theme_4inoc")
+text = "Net Id :"
+
+[node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="."]
+_spawnable_scenes = PackedStringArray("res://player.tscn")
+spawn_path = NodePath("../PlayerSpawn")
+
+[node name="PlayerSpawn" type="Node" parent="."]
+
+[node name="PlayerSpawnLocation" type="Marker2D" parent="."]
+position = Vector2(576, 320)
+
+[connection signal="pressed" from="ConnectionMenu/HBoxContainer/HostButton" to="." method="_on_host_button_pressed"]
+[connection signal="pressed" from="ConnectionMenu/HBoxContainer/ConnectButton" to="." method="_on_connect_button_pressed"]
