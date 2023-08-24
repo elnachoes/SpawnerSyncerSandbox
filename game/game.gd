@@ -1,63 +1,56 @@
 extends Node
 
-@onready var multiplayer_spawner = $"MultiplayerSpawner"
+@onready var menu := $Menu as Menu
 @onready var player_spawn_location = $"PlayerSpawnLocation"
 @onready var player_spawn = $"PlayerSpawn"
-@onready var net_id_label = $"ConnectionMenu/HBoxContainer/NetIdLabel"
-@onready var ip_address_input = $"ConnectionMenu/HBoxContainer/VBoxContainer/IpAddress"
-@onready var port_input = $"ConnectionMenu/HBoxContainer/VBoxContainer/Port"
 
 const MAX_CLIENTS = 4
 
 var player_scene = load("res://player/player.tscn")
 
-var players = []
 
 func _ready():
-	if OS.get_cmdline_args().find("server") != -1:
-		create_server()
+	menu.host_pressed.connect(create_server)
+	menu.connect_pressed.connect(create_client)
 
-# setup a server and the nessesary events and set the label text
-func create_server():
+
+func create_server(port: int, max_players: int, headless: bool):
+	var max_clients = max_players - 1
 	var peer = ENetMultiplayerPeer.new()
-	peer.create_server(int(port_input.text), MAX_CLIENTS)
+	peer.create_server(port, max_clients)
 	multiplayer.multiplayer_peer = peer
 	multiplayer.peer_connected.connect(handle_client_connected)
 	multiplayer.peer_disconnected.connect(handle_client_disconnected)
-	net_id_label.text = "Server"
+	if not headless:
+		create_player(1)
+	menu.hide()
 
-func create_player(id : int):
-	var player = player_scene.instantiate()
-	players.append(player)
-	player.name = "player_%s" % id
+
+func create_client(address: String, port: int):
+	var peer = ENetMultiplayerPeer.new()
+	peer.create_client(address, port)
+	multiplayer.multiplayer_peer = peer
+	multiplayer.server_disconnected.connect(handle_server_disconnected)
+	menu.hide()
+
+
+func create_player(id: int):
+	var player = player_scene.instantiate() as Player
+	player.name = str(id)
 	player.assigned_net_id = id
 	player.position = player_spawn_location.position
 	player_spawn.call_deferred("add_child", player)
 
-func _on_host_button_pressed():
-	create_server()
 
-# create client and set label text
-func _on_connect_button_pressed():
-	var peer = ENetMultiplayerPeer.new()
-	peer.create_client(ip_address_input.text, int(port_input.text))
-	multiplayer.multiplayer_peer = peer
-	net_id_label.text = "Client Net Id : %s" % multiplayer.get_unique_id()
-
-func _on_host_as_player_pressed():
-	create_server()
-	create_player(1)
-
-# whenever a client connects spawn a new player
-# this will only ever be called on the server
-func handle_client_connected(id : int):
+func handle_client_connected(id: int):
 	create_player(id)
 
-# whenever a client disconnects remove that player
-# this will only ever be called on the server
-func handle_client_disconnected(id : int):
-	if multiplayer.is_server():
-		for player in players:
-			if player.assigned_net_id == id:
-				player.free()
-				players.remove_at(players.find(player))
+
+func handle_client_disconnected(id: int):
+	if player_spawn.has_node(str(id)):
+		player_spawn.get_node(str(id)).queue_free()
+
+
+func handle_server_disconnected():
+	multiplayer.multiplayer_peer = null
+	menu.show()
