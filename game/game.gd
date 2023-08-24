@@ -9,7 +9,7 @@ extends Node
 
 const MAX_CLIENTS = 4
 
-var player_scene = load("res://player.tscn")
+var player_scene = load("res://player/player.tscn")
 
 var players = []
 

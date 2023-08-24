@@ -1,11 +1,8 @@
 [gd_scene load_steps=4 format=3 uid="uid://b367dtawi0twu"]
 
-[ext_resource type="Script" path="res://game.gd" id="1_k6w5g"]
+[ext_resource type="Script" path="res://game/game.gd" id="1_u08y5"]
 
 [sub_resource type="FontFile" id="FontFile_lsd7l"]
-face_index = null
-embolden = null
-transform = null
 cache/0/16/0/ascent = 0.0
 cache/0/16/0/descent = 0.0
 cache/0/16/0/underline_position = 0.0
@@ -36,7 +33,7 @@ default_font = SubResource("FontFile_lsd7l")
 default_font_size = 30
 
 [node name="Game" type="Node"]
-script = ExtResource("1_k6w5g")
+script = ExtResource("1_u08y5")
 
 [node name="ConnectionMenu" type="Control" parent="."]
 layout_mode = 3
@@ -48,9 +45,8 @@ grow_vertical = 2
 metadata/_edit_use_anchors_ = true
 
 [node name="HBoxContainer" type="VBoxContainer" parent="ConnectionMenu"]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
+offset_right = 254.0
+offset_bottom = 188.0
 
 [node name="NetIdLabel" type="Label" parent="ConnectionMenu/HBoxContainer"]
 layout_mode = 2
@@ -86,7 +82,7 @@ layout_mode = 2
 text = "Connect"
 
 [node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="."]
-_spawnable_scenes = PackedStringArray("res://player.tscn")
+_spawnable_scenes = PackedStringArray("res://player/player.tscn")
 spawn_path = NodePath("../PlayerSpawn")
 
 [node name="PlayerSpawn" type="Node" parent="."]
