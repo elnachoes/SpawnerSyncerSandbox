@@ -41,7 +41,7 @@ text = "Max Players"
 layout_mode = 2
 size_flags_horizontal = 3
 min_value = 1.0
-max_value = 8.0
+max_value = 4096.0
 value = 4.0
 
 [node name="HostButton" type="Button" parent="."]

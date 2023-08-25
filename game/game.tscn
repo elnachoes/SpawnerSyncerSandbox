@@ -1,12 +1,24 @@
-[gd_scene load_steps=3 format=3 uid="uid://b367dtawi0twu"]
+[gd_scene load_steps=4 format=3 uid="uid://b367dtawi0twu"]
 
 [ext_resource type="Script" path="res://game/game.gd" id="1_u08y5"]
 [ext_resource type="PackedScene" uid="uid://14bynejisexy" path="res://menu/menu.tscn" id="2_6u1ph"]
+[ext_resource type="Script" path="res://game/camera.gd" id="3_ugtps"]
 
 [node name="Game" type="Node"]
 script = ExtResource("1_u08y5")
 
-[node name="Menu" parent="." instance=ExtResource("2_6u1ph")]
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Menu" parent="CanvasLayer" instance=ExtResource("2_6u1ph")]
+offset_left = -200.0
+offset_top = -162.0
+offset_right = 200.0
+offset_bottom = 162.0
+
+[node name="MultiTargetCamera" type="Camera2D" parent="."]
+process_callback = 0
+position_smoothing_enabled = true
+script = ExtResource("3_ugtps")
 
 [node name="PlayerSpawner" type="MultiplayerSpawner" parent="."]
 _spawnable_scenes = PackedStringArray("res://player/player.tscn")

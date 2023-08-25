@@ -1,6 +1,7 @@
 extends Node
 
-@onready var menu := $Menu as Menu
+@onready var camera := $MultiTargetCamera as MultiTargetCamera
+@onready var menu := $CanvasLayer/Menu as Menu
 @onready var player_spawn_location := $PlayerSpawnLocation as Marker2D
 @onready var players := $Players as Node
 
@@ -10,6 +11,10 @@ var player_scene = load("res://player/player.tscn") as PackedScene
 func _ready():
 	menu.host_pressed.connect(create_server)
 	menu.connect_pressed.connect(create_client)
+
+
+func _physics_process(_delta):
+	camera.show_all_targets(players.get_children())
 
 
 func create_server(port: int, max_players: int, headless: bool):
