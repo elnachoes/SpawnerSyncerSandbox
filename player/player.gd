@@ -3,24 +3,16 @@ extends CharacterBody2D
 
 const SPEED = 300.0
 
-var assigned_net_id = 0
+@export var input_peer_id := 1
 
-func is_controlled_by_server() -> bool : return multiplayer.is_server() and assigned_net_id == 1
+@onready var inputs := $Inputs as PlayerInputs
+
+
+func _ready():
+	inputs.set_multiplayer_authority(input_peer_id)
+
 
 func _physics_process(_delta):
-	# if the player is a client send the input to server and it will handle movement
-	# the changing position will come back through the synchronizer
-	var input_direction = Vector2(Input.get_axis("left", "right"), Input.get_axis("up", "down"))
-	
-	if is_controlled_by_server():
-		handle_input(input_direction)
-	
 	if multiplayer.is_server():
+		velocity = inputs.direction.normalized() * SPEED
 		move_and_slide()
-	else:
-		handle_input.rpc_id(1, input_direction)
-
-@rpc("any_peer", "call_remote", "unreliable")
-func handle_input(input_direction : Vector2):  
-	if multiplayer.get_remote_sender_id() == assigned_net_id or is_controlled_by_server():
-		velocity = input_direction.normalized() * SPEED

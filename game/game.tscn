@@ -8,11 +8,11 @@ script = ExtResource("1_u08y5")
 
 [node name="Menu" parent="." instance=ExtResource("2_6u1ph")]
 
-[node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="."]
+[node name="PlayerSpawner" type="MultiplayerSpawner" parent="."]
 _spawnable_scenes = PackedStringArray("res://player/player.tscn")
-spawn_path = NodePath("../PlayerSpawn")
+spawn_path = NodePath("../Players")
 
-[node name="PlayerSpawn" type="Node" parent="."]
+[node name="Players" type="Node" parent="."]
 
 [node name="PlayerSpawnLocation" type="Marker2D" parent="."]
 position = Vector2(576, 320)
