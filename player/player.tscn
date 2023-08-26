@@ -4,6 +4,16 @@
 [ext_resource type="Texture2D" uid="uid://de2ox2pf1438u" path="res://icon.svg" id="2_2cnvf"]
 [ext_resource type="Script" path="res://player/inputs.gd" id="2_5tppn"]
 
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_1s1ne"]
+properties/0/path = NodePath(".:input_peer_id")
+properties/0/spawn = true
+properties/0/sync = false
+properties/0/watch = false
+properties/1/path = NodePath(".:position")
+properties/1/spawn = true
+properties/1/sync = true
+properties/1/watch = false
+
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_cge41"]
 properties/0/path = NodePath(".:direction")
 properties/0/spawn = true
@@ -12,18 +22,20 @@ properties/0/watch = false
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_h6gf5"]
 
-[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_1s1ne"]
-properties/0/path = NodePath(".:position")
-properties/0/spawn = true
-properties/0/sync = true
-properties/0/watch = false
-properties/1/path = NodePath(".:input_peer_id")
-properties/1/spawn = true
-properties/1/sync = false
-properties/1/watch = false
-
 [node name="Player" type="CharacterBody2D"]
 script = ExtResource("1_40fkp")
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_1s1ne")
+
+[node name="Label" type="Label" parent="."]
+custom_minimum_size = Vector2(128, 0)
+offset_left = -64.0
+offset_top = -95.0
+offset_right = 64.0
+offset_bottom = -72.0
+text = "Player"
+horizontal_alignment = 1
 
 [node name="Inputs" type="Node" parent="."]
 script = ExtResource("2_5tppn")
@@ -36,6 +48,3 @@ texture = ExtResource("2_2cnvf")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_h6gf5")
-
-[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
-replication_config = SubResource("SceneReplicationConfig_1s1ne")

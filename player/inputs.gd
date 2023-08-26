@@ -1,7 +1,7 @@
 class_name PlayerInputs
 extends Node
 
-@export var direction = Vector2()
+@export var direction := Vector2()
 
 
 func _physics_process(_delta):

@@ -1,43 +1,33 @@
 class_name MultiTargetCamera
 extends Camera2D
 
-@export var smooth_zoom = true
+@export var target_size := Vector2(128, 128)
+@export_range(0.1, 1) var margin := 0.75
+@export_range(0, 1) var zoom_lerp := 0.05
 
 
 func show_all_targets(targets: Array):
-	var num_targets = targets.size()
+	var num_targets := targets.size()
 	if num_targets == 0:
 		return
 	
-	var pos = Vector2()
-	
-	var max_x = -INF
-	var max_y = -INF
-	var min_x = INF
-	var min_y = INF
+	var min_bound := Vector2(INF, INF)
+	var max_bound := Vector2(-INF, -INF)
 
 	for target in targets:
-		pos += target.position
+		min_bound.x = min(min_bound.x, target.position.x)
+		min_bound.y = min(min_bound.y, target.position.y)
 		
-		max_x = max(max_x, target.position.x)
-		max_y = max(max_y, target.position.y)
-		min_x = min(min_x, target.position.x)
-		min_y = min(min_y, target.position.y)
+		max_bound.x = max(max_bound.x, target.position.x)
+		max_bound.y = max(max_bound.y, target.position.y)
 	
-	position = pos / num_targets
+	position = (min_bound + max_bound) / 2
 	
-	var furthest_x = 2 * max(max_x - pos.x, pos.x - min_x)
-	var furthest_y = 2 * max(max_y - pos.y, pos.y - min_y)
+	var window_size := Vector2(DisplayServer.window_get_size())
+	var view_size := (max_bound - position) * 2
 	
-	var ratio_x = DisplayServer.window_get_size().x / furthest_x
-	var ratio_y = DisplayServer.window_get_size().y / furthest_y
+	var ratio = window_size / (view_size + target_size)
+	var best_ratio = min(ratio.x, ratio.y) * margin
 	
-	var best_ratio = min(ratio_x, ratio_y)
-	var new_zoom = Vector2(best_ratio, best_ratio)
-	if new_zoom > Vector2.ONE:
-		new_zoom = Vector2.ONE
-	
-	if smooth_zoom:
-		zoom = zoom.lerp(new_zoom, 0.05)
-	else:
-		zoom = new_zoom
+	var new_zoom := Vector2(best_ratio, best_ratio).clamp(Vector2.ZERO, Vector2.ONE)
+	zoom = zoom.lerp(new_zoom, zoom_lerp)

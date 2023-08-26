@@ -22,10 +22,10 @@ func create_server(port: int, max_players: int, headless: bool):
 	var peer = ENetMultiplayerPeer.new()
 	peer.create_server(port, max_clients)
 	multiplayer.multiplayer_peer = peer
-	multiplayer.peer_connected.connect(handle_client_connected)
-	multiplayer.peer_disconnected.connect(handle_client_disconnected)
+	multiplayer.peer_connected.connect(on_client_connected)
+	multiplayer.peer_disconnected.connect(on_client_disconnected)
 	if not headless:
-		create_player(1)
+		on_client_connected(1)
 	menu.hide()
 
 
@@ -33,11 +33,11 @@ func create_client(address: String, port: int):
 	var peer = ENetMultiplayerPeer.new()
 	peer.create_client(address, port)
 	multiplayer.multiplayer_peer = peer
-	multiplayer.server_disconnected.connect(handle_server_disconnected)
+	multiplayer.server_disconnected.connect(on_server_disconnected)
 	menu.hide()
 
 
-func create_player(id: int):
+func on_client_connected(id: int):
 	var player = player_scene.instantiate() as Player
 	player.name = str(id)
 	player.input_peer_id = id
@@ -45,15 +45,11 @@ func create_player(id: int):
 	players.add_child(player)
 
 
-func handle_client_connected(id: int):
-	create_player(id)
-
-
-func handle_client_disconnected(id: int):
+func on_client_disconnected(id: int):
 	if players.has_node(str(id)):
 		players.get_node(str(id)).queue_free()
 
 
-func handle_server_disconnected():
+func on_server_disconnected():
 	multiplayer.multiplayer_peer = null
 	menu.show()
