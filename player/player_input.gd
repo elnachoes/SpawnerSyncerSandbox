@@ -1,10 +1,13 @@
-class_name PlayerInputs
+class_name PlayerInput
 extends Node
 
 @export var direction := Vector2()
 @export var sync_number := 0
 
+@onready var syncer := $InputSyncer as MultiplayerSynchronizer
+
 var history: Array[InputRecord] = []
+
 
 func _physics_process(delta):
 	if is_multiplayer_authority():

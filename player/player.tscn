@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://player/player.gd" id="1_40fkp"]
 [ext_resource type="Texture2D" uid="uid://de2ox2pf1438u" path="res://icon.svg" id="2_2cnvf"]
-[ext_resource type="Script" path="res://player/inputs.gd" id="2_5tppn"]
+[ext_resource type="Script" path="res://player/player_input.gd" id="2_x0fua"]
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_1s1ne"]
 properties/0/path = NodePath(".:input_peer_id")
@@ -37,7 +37,7 @@ properties/1/watch = false
 [node name="Player" type="CharacterBody2D"]
 script = ExtResource("1_40fkp")
 
-[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+[node name="PlayerSyncer" type="MultiplayerSynchronizer" parent="."]
 replication_config = SubResource("SceneReplicationConfig_1s1ne")
 
 [node name="Label" type="Label" parent="."]
@@ -49,11 +49,12 @@ offset_bottom = -72.0
 text = "Player"
 horizontal_alignment = 1
 
-[node name="Inputs" type="Node" parent="."]
-script = ExtResource("2_5tppn")
+[node name="Input" type="Node" parent="."]
+script = ExtResource("2_x0fua")
 
-[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="Inputs"]
+[node name="InputSyncer" type="MultiplayerSynchronizer" parent="Input"]
 replication_config = SubResource("SceneReplicationConfig_cge41")
+public_visibility = false
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("2_2cnvf")
