@@ -1,7 +1,7 @@
 class_name Player
 extends CharacterBody2D
 
-const SPEED = 300.0
+const SPEED = 600.0
 const position_lerp = 0.5
 
 @export var input_peer_id := 1
@@ -21,11 +21,12 @@ func _ready():
 		label.text += " (you)"
 
 
-func _physics_process(_delta):
+func _physics_process(delta):
 	if multiplayer.is_server():
-		velocity = input.direction.normalized() * SPEED
-		move_and_slide()
-		
+		velocity = velocity.lerp(input.direction.normalized() * SPEED, 0.1)
+		var collision = move_and_collide(velocity * delta)
+		if collision:
+			velocity = velocity.bounce(collision.get_normal())
 		synced_position = position
 		sync_number = input.sync_number
 	else:

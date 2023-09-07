@@ -1,5 +1,6 @@
 extends Node
 
+@onready var background := $Background as TextureRect
 @onready var camera := $MultiTargetCamera as MultiTargetCamera
 @onready var menu := $CanvasLayer/Menu as Menu
 @onready var player_spawn_location := $PlayerSpawnLocation as Marker2D
@@ -27,6 +28,7 @@ func create_server(port: int, max_players: int, headless: bool):
 	if not headless:
 		on_client_connected(1)
 	menu.hide()
+	background.show()
 
 
 func create_client(address: String, port: int):
@@ -35,6 +37,7 @@ func create_client(address: String, port: int):
 	multiplayer.multiplayer_peer = peer
 	multiplayer.server_disconnected.connect(on_server_disconnected)
 	menu.hide()
+	background.show()
 
 
 func on_client_connected(id: int):
@@ -53,3 +56,4 @@ func on_client_disconnected(id: int):
 func on_server_disconnected():
 	multiplayer.multiplayer_peer = null
 	menu.show()
+	background.hide()

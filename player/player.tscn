@@ -32,7 +32,8 @@ properties/1/spawn = true
 properties/1/sync = true
 properties/1/watch = false
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_h6gf5"]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_el343"]
+size = Vector2(112, 112)
 
 [node name="Player" type="CharacterBody2D"]
 script = ExtResource("1_40fkp")
@@ -60,4 +61,4 @@ public_visibility = false
 texture = ExtResource("2_2cnvf")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource("CircleShape2D_h6gf5")
+shape = SubResource("RectangleShape2D_el343")
